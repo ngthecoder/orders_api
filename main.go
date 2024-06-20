@@ -1,27 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/ngthecoder/orders_api/application"
 )
 
 func main() {
-	router := chi.NewRouter()
-	router.Get("/", basicHandler)
+	app := application.New()
 
-	server := &http.Server{
-		Addr:    ":3000",
-		Handler: router,
-	}
-
-	err := server.ListenAndServe()
+	err := app.Start(context.TODO())
 	if err != nil {
-		fmt.Println("Error starting server: ", err)
+		fmt.Printf("failed to start application: %v\n", err)
 	}
-}
-
-func basicHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, World!"))
 }
